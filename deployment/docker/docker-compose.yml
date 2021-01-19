@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  reverseproxy:
+    image: omogbare/udagram-reverseproxy
+    ports:
+      - 8080:8080
+    restart: always
+    depends_on:
+      - feed-api
+      - users-api
+  feed-api:
+    image: omogbare/udagram-feed-api
+    volumes:
+      - $HOME/.aws:/root/.aws
+    environment:
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_HOST: $POSTGRES_HOST
+      POSTGRES_DB: $POSTGRES_DB
+      AWS_BUCKET: $AWS_BUCKET
+      AWS_REGION: $AWS_REGION
+      AWS_PROFILE: $AWS_PROFILE
+      JWT_SECRET: $JWT_SECRET
+      URL: "http://localhost:8100"
+  users-api:
+    image: omogbare/udagram-users-api
+    volumes:
+      - $HOME/.aws:/root/.aws
+    environment:
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_HOST: $POSTGRES_HOST
+      POSTGRES_DB: $POSTGRES_DB
+      AWS_BUCKET: $AWS_BUCKET
+      AWS_REGION: $AWS_REGION
+      AWS_PROFILE: $AWS_PROFILE
+      JWT_SECRET: $JWT_SECRET
+      URL: "http://localhost:8100"
+  frontend:
+    image: omogbare/udagram-frontend
+    ports:
+      - "8100:80"
