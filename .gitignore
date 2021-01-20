@@ -1,2 +1,4 @@
 set_env.sh
 udagram-api
+aws-secret.yml
+env-configmap.yml
