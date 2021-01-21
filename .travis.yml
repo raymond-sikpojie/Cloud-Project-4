@@ -11,6 +11,20 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yml build --parallel
+  - docker tag users-api omogbare/udagram-users-api
+  - docker tag feed-api omogbare/udagram-feed-api
+  - docker tag frontend omogbare/udagram-frontend
+  - docker tag reverseproxy omogbare/udagram-reverseproxy
+
+deploy:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push omogbare/udagram-users-api:latest
+  - docker push omogbare/udagram-feed-api:latest
+  - docker push omogbare/udagram-frontend:latest
+  - docker push omogbare/udagram-reverseproxy:latest
