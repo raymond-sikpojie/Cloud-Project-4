@@ -17,13 +17,13 @@ before_install:
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yml build --parallel
+
+deploy:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker tag users-api omogbare/udagram-users-api
   - docker tag feed-api omogbare/udagram-feed-api
   - docker tag frontend omogbare/udagram-frontend
   - docker tag reverseproxy omogbare/udagram-reverseproxy
-
-deploy:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push omogbare/udagram-users-api:latest
   - docker push omogbare/udagram-feed-api:latest
   - docker push omogbare/udagram-frontend:latest
