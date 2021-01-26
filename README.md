@@ -38,4 +38,4 @@ To begin,
 
 - Run the command `kubectl get pods` to see the kubernetes pods which contain the docker containers.
 
-- Set up an account for Travis CI, link your project repository on Github with Travis CI. Configure your Dockerhub Username and Password as environment varibles in Travis CI.
+- Set up an account for Travis CI, link your project repository on Github with Travis CI. Configure your Dockerhub username and password as environment variables in Travis CI.
